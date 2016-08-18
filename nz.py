@@ -6,8 +6,8 @@ import json
 import random
 #节假日数据
 def jjrdate():
-    showapi_appid="apiid"  #appid
-    showapi_sign="api_sign"   #api_sign
+    showapi_appid = "apiid"  #appid
+    showapi_sign = "api_sign"   #api_sign
     url="http://route.showapi.com/894-1"
     send_data = parse.urlencode([
     ('showapi_appid', showapi_appid)
@@ -18,9 +18,9 @@ def jjrdate():
  
     req = request.Request(url)
     with request.urlopen(req, data=send_data.encode('utf-8')) as f:
-      str_res= f.read().decode('utf-8')
-      svb_res=json.loads(str_res)
-      date=svb_res["showapi_res_body"]
+      str_res = f.read().decode('utf-8')
+      svb_res = json.loads(str_res)
+      date = svb_res["showapi_res_body"]
     return date
 #闹钟
 def aclock():
