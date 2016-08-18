@@ -1,15 +1,13 @@
-import time
 import os
 import sys
 from subprocess import call
-from urllib 
-import request, parse
+from urllib import    request, parse
 import json
- 
-
-def jjr():
-    showapi_appid="xxxxxxxxxx"  #替换此值
-    showapi_sign="xxxxxxxxxx"   #替换此值
+import random
+#节假日数据
+def jjrdate():
+    showapi_appid="apiid"  #appid
+    showapi_sign="api_sign"   #api_sign
     url="http://route.showapi.com/894-1"
     send_data = parse.urlencode([
     ('showapi_appid', showapi_appid)
@@ -17,27 +15,20 @@ def jjr():
      ,('day', "")
      
   ])
-
-# When get up ?
-h = 7
-m = 10
  
-loop = True
-while(loop):
-    # now
-    dt = list(time.localtime())
-    hour = dt[3]
-    minute = dt[4]
- 
-    # get up ?
-    if h == hour and m == minute:
-        return_code = call("/usr/bin/mpg123 我只在乎你.mp3", shell=True)
-        loop = False
- 
-    # display current time
-    timestr = "%04d-%02d-%02d %02d:%02d:%02d\r" \
-            % (dt[0], dt[1], dt[2], dt[3], dt[4], dt[5])
-    sys.stdout.write(timestr)
-    sys.stdout.flush()
-    time.sleep(1)
-    # end
+    req = request.Request(url)
+    with request.urlopen(req, data=send_data.encode('utf-8')) as f:
+      str_res= f.read().decode('utf-8')
+      svb_res=json.loads(str_res)
+      date=svb_res["showapi_res_body"]
+    return date
+#闹钟
+def aclock():
+        
+    jdate = jjrdate()
+    gzr = int(jdate["type"])
+#判断是否工作日
+    if gzr == 1:
+        return_code = call("/usr/bin/mpg123 ./music/music" + str(random.randint(1,4)) + ".mp3 ", shell=True)
+if __name__=='__main__': 
+    aclock()
